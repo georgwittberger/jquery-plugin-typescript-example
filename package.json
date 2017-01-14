@@ -1,0 +1,27 @@
+{
+  "name": "jquery-plugin-typescript-example",
+  "version": "1.0.0",
+  "description": "Example project to demonstrate how to write a jQuery plugin using TypeScript",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "typings install",
+    "build": "npm run compile && npm run copy:html && npm run bundle && npm run minify",
+    "compile": "tsc",
+    "copy:html": "cpx src/**.html dist",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "bundle": "rollup -c",
+    "minify": "uglifyjs dist/example.plugin.bundle.js --output dist/example.plugin.bundle.min.js --source-map dist/example.plugin.bundle.min.js.map --source-map-url example.plugin.bundle.min.js.map --in-source-map dist/example.plugin.bundle.js.map"
+  },
+  "author": "Georg Wittberger",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-preset-es2015-rollup": "^3.0.0",
+    "cpx": "^1.5.0",
+    "rollup": "^0.41.3",
+    "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-sourcemaps": "^0.4.1",
+    "typescript": "^2.1.5",
+    "typings": "^2.1.0",
+    "uglify-js": "^2.7.5"
+  }
+}

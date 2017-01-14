@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>jQuery Plugin Example</title>
+</head>
+
+<body>
+  <h1>jQuery Plugin Example</h1>
+  <div>
+    <button type="button">John</button>
+    <button type="button">Alex</button>
+    <button type="button">Steve</button>
+  </div>
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+  <script src="example.plugin.bundle.min.js"></script>
+  <script>
+    $(function () {
+      $('button').examplePlugin();
+    });
+  </script>
+</body>
+
+</html>
