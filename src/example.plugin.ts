@@ -1,10 +1,11 @@
+import $ from 'jquery';
 import { ExampleOptions } from './example.options';
 import { ExampleService } from './example.service';
 
 // Define the plugin function
-jQuery.fn.examplePlugin = function (this: JQuery, options: ExampleOptions) {
+$.fn.examplePlugin = function (this: JQuery, options: ExampleOptions) {
   // Merge the global options with the per-call options
-  options = jQuery.extend({}, jQuery.fn.examplePlugin.options, options);
+  options = $.extend({}, $.fn.examplePlugin.options, options);
 
   // Check if required options are missing
   if (!options.outputSelector) {
@@ -16,11 +17,11 @@ jQuery.fn.examplePlugin = function (this: JQuery, options: ExampleOptions) {
   this.click(function (event: JQueryEventObject) {
     let exampleService = new ExampleService();
     let messageText = exampleService.getExampleMessage(event.target.textContent);
-    let messageElement = jQuery('<p>' + messageText + '</p>');
+    let messageElement = $('<p>' + messageText + '</p>');
     if (options.outputColor) {
       messageElement.css('color', options.outputColor);
     }
-    jQuery(options.outputSelector).append(messageElement);
+    $(options.outputSelector).append(messageElement);
   });
 
   // Return the jQuery result for chaining
@@ -28,4 +29,4 @@ jQuery.fn.examplePlugin = function (this: JQuery, options: ExampleOptions) {
 }
 
 // Define the plugin's global default options
-jQuery.fn.examplePlugin.options = {};
+$.fn.examplePlugin.options = {};

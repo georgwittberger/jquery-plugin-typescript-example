@@ -8,6 +8,7 @@
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
+    "allowSyntheticDefaultImports": true,
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true

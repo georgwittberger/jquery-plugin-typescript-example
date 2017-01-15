@@ -5,6 +5,9 @@ export default {
   entry: 'dist/example.plugin.js',
   dest: 'dist/example.plugin.bundle.js',
   format: 'iife',
+  globals: {
+    jquery: 'jQuery'
+  },
   sourceMap: true,
   plugins: [
     babel({
