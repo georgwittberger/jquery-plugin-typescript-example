@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "postinstall": "typings install",
+    "clean": "rimraf dist",
     "build": "npm run compile && npm run copy:html && npm run bundle && npm run minify",
     "compile": "tsc",
     "copy:html": "cpx src/**.html dist",
@@ -17,7 +18,8 @@
   "devDependencies": {
     "babel-preset-es2015-rollup": "^3.0.0",
     "cpx": "^1.5.0",
-    "rollup": "^0.41.3",
+    "rimraf": "^2.5.4",
+    "rollup": "^0.41.4",
     "rollup-plugin-babel": "^2.7.1",
     "rollup-plugin-sourcemaps": "^0.4.1",
     "typescript": "^2.1.5",
