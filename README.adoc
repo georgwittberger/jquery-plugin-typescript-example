@@ -1,0 +1,27 @@
+= jQuery Plugin TypeScript Example
+
+This project demonstrates how to write a jQuery plugin using TypeScript.
+
+It shows the following concepts:
+
+. Writing the jQuery plugin in TypeScript code
+. Splitting the code for the jQuery plugin across multiple TypeScript modules
+. Compiling the jQuery plugin and its dependencies to ES2015 modules
+. Bundling the ES2015 modules to a single IIFE module using http://rollupjs.org/[rollup.js]
+. Minifying the bundle using http://lisperator.net/uglifyjs/[UglifyJS]
+. Supporting global and per-call options for the jQuery plugin
+. Testing the jQuery plugin classes using https://karma-runner.github.io/[Karma] and https://jasmine.github.io/[Jasmine]
+
+== Getting Started
+
+. Clone the repository
+. Open a terminal in the project root
+. Make sure you have installed a recent version of https://nodejs.org/[Node.js]
+. Install the dependencies by running: `npm install`
+. Build the project by running: `npm run build`
+. Execute the tests by running: `npm test`
+. Open the file `dist/example.html` in your browser to check if it works.
+
+== License
+
+MIT

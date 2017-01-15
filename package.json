@@ -2,22 +2,33 @@
   "name": "jquery-plugin-typescript-example",
   "version": "1.0.0",
   "description": "Example project to demonstrate how to write a jQuery plugin using TypeScript",
-  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/georgwittberger/jquery-plugin-typescript-example.git"
+  },
   "scripts": {
     "postinstall": "typings install",
-    "clean": "rimraf dist",
+    "clean": "rimraf dist && rimraf coverage",
     "build": "npm run compile && npm run copy:html && npm run bundle && npm run minify",
     "compile": "tsc",
     "copy:html": "cpx src/**.html dist",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "karma start",
     "bundle": "rollup -c",
     "minify": "uglifyjs dist/example.plugin.bundle.js --output dist/example.plugin.bundle.min.js --source-map dist/example.plugin.bundle.min.js.map --source-map-url example.plugin.bundle.min.js.map --in-source-map dist/example.plugin.bundle.js.map"
   },
-  "author": "Georg Wittberger",
+  "author": "Georg Wittberger <georg.wittberger@gmail.com>",
   "license": "MIT",
+  "dependencies": {
+    "jquery": "^2.2.4"
+  },
   "devDependencies": {
     "babel-preset-es2015-rollup": "^3.0.0",
     "cpx": "^1.5.0",
+    "jasmine-core": "^2.5.2",
+    "karma": "^1.4.0",
+    "karma-jasmine": "^1.1.0",
+    "karma-phantomjs-launcher": "^1.0.2",
+    "karma-typescript": "^2.1.6",
     "rimraf": "^2.5.4",
     "rollup": "^0.41.4",
     "rollup-plugin-babel": "^2.7.1",
