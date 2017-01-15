@@ -9,15 +9,24 @@
 <body>
   <h1>jQuery Plugin Example</h1>
   <div>
-    <button type="button">John</button>
-    <button type="button">Alex</button>
-    <button type="button">Steve</button>
+    <button type="button" id="btn-john">John</button>
+    <button type="button" id="btn-alex">Alex</button>
   </div>
+  <div id="messages"></div>
+  <!-- Load jQuery -->
   <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+  <!-- Load the plugin bundle -->
   <script src="example.plugin.bundle.min.js"></script>
   <script>
+    // Set global options for the plugin
+    $.fn.examplePlugin.options = { outputSelector: '#messages' };
+
+    // Use the plugin once the DOM has been loaded
     $(function () {
-      $('button').examplePlugin();
+      // Apply the plugin without any additional options
+      $('#btn-john').examplePlugin();
+      // Apply the plugin with additional options
+      $('#btn-alex').examplePlugin({ outputColor: 'red' });
     });
   </script>
 </body>
