@@ -1,6 +1,8 @@
-import { ExampleService } from './example.service';
+import { ExampleService } from './example-service';
 
-describe('Service test', () => {
+// Define a test suite for the example service.
+describe('ExampleService', () => {
+  // Define a test for the example service.
   it('should return a greeting for the given name', () => {
     let exampleService = new ExampleService();
     let messageText = exampleService.getExampleMessage('Frank');

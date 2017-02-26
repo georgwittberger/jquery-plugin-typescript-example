@@ -8,6 +8,7 @@
 
 <body>
   <h1>jQuery Plugin Example</h1>
+  <p>The buttons are equipped with the example plugin to produce a greeting message on each click. Try it:</p>
   <div>
     <button type="button" id="btn-john">John</button>
     <button type="button" id="btn-alex">Alex</button>
@@ -15,17 +16,18 @@
   <div id="messages"></div>
   <!-- Load jQuery -->
   <script src="../node_modules/jquery/dist/jquery.min.js"></script>
-  <!-- Load the plugin bundle -->
-  <script src="example.plugin.bundle.min.js"></script>
+  <!-- Load the example plugin bundle. -->
+  <script src="example-plugin-bundle.min.js"></script>
   <script>
-    // Set global options for the plugin
+    // Set global options for the plugin.
     $.fn.examplePlugin.options = { outputSelector: '#messages' };
 
-    // Use the plugin once the DOM has been loaded
+    // Use the plugin once the DOM has been loaded.
     $(function () {
-      // Apply the plugin without any additional options
+      // Apply the plugin without any additional options to use the default options.
       $('#btn-john').examplePlugin();
-      // Apply the plugin with additional options
+
+      // Apply the plugin with additional options to override certain default options.
       $('#btn-alex').examplePlugin({ outputColor: 'red' });
     });
   </script>

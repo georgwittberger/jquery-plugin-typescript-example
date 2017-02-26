@@ -1,26 +1,29 @@
 = jQuery Plugin TypeScript Example
 
-This project demonstrates how to write a jQuery plugin using TypeScript.
+This example project demonstrates how to write a jQuery plugin using TypeScript.
 
-It shows the following concepts:
+It incorporates the following concepts to facilitate development and provide modern deployment:
 
-. Writing the jQuery plugin in TypeScript code
-. Splitting the code for the jQuery plugin across multiple TypeScript modules
-. Compiling the jQuery plugin and its dependencies to ES2015 modules
-. Bundling the ES2015 modules to a single IIFE module using http://rollupjs.org/[rollup.js]
-. Minifying the bundle using http://lisperator.net/uglifyjs/[UglifyJS]
-. Supporting global and per-call options for the jQuery plugin
-. Testing the jQuery plugin classes using https://karma-runner.github.io/[Karma] and https://jasmine.github.io/[Jasmine]
+. Source code of the jQuery plugin can be written in TypeScript with all the benefits like type checking, code completion etc.
+. Source code of the jQuery plugin can be structured into various modules to allow separation of concerns and reuse of certain classes or functions.
+. Source code of the jQuery plugin is automatically tested using https://karma-runner.github.io/[Karma] and https://jasmine.github.io/[Jasmine].
+. TypeScript modules are compiled into modern ES2015 modules which can be loaded in modern browsers.
+. ES2015 modules are bundled into a single JavaScript file using http://rollupjs.org/[rollup.js]. The bundle is converted to ES5 language level for better browser compatibility.
+. JavaScript bundle is minified using http://lisperator.net/uglifyjs/[UglifyJS] to further reduce its size.
 
 == Getting Started
 
-. Clone the repository
-. Open a terminal in the project root
-. Make sure you have installed a recent version of https://nodejs.org/[Node.js]
-. Install the dependencies by running: `npm install`
-. Build the project by running: `npm run build`
-. Execute the tests by running: `npm test`
-. Open the file `dist/example.html` in your browser to check if it works.
+. Clone the repository.
+. Open a terminal in the project root.
+. Make sure you have installed a recent version of https://nodejs.org/[Node.js].
+. Install the dependencies by running: `npm install`.
+. Build the project by running: `npm run build`.
+. Execute the tests by running: `npm test`.
+. Open the file `dist/example.html` in your browser. Try it.
+
+== Step-by-Step Tutorial
+
+Upcoming...
 
 == License
 

@@ -7,34 +7,35 @@
     "url": "https://github.com/georgwittberger/jquery-plugin-typescript-example.git"
   },
   "scripts": {
-    "postinstall": "typings install",
     "clean": "rimraf dist && rimraf coverage",
     "build": "npm run compile && npm run copy:html && npm run bundle && npm run minify",
     "compile": "tsc",
     "copy:html": "cpx src/**.html dist",
     "test": "karma start",
     "bundle": "rollup -c",
-    "minify": "uglifyjs dist/example.plugin.bundle.js --output dist/example.plugin.bundle.min.js --source-map dist/example.plugin.bundle.min.js.map --source-map-url example.plugin.bundle.min.js.map --in-source-map dist/example.plugin.bundle.js.map"
+    "minify": "uglifyjs dist/example-plugin-bundle.js --output dist/example-plugin-bundle.min.js --source-map dist/example-plugin-bundle.min.js.map --source-map-url example-plugin-bundle.min.js.map --in-source-map dist/example-plugin-bundle.js.map"
   },
   "author": "Georg Wittberger <georg.wittberger@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "jquery": "^2.2.4"
+    "jquery": "~3.1.1"
   },
   "devDependencies": {
-    "babel-preset-es2015-rollup": "^3.0.0",
-    "cpx": "^1.5.0",
-    "jasmine-core": "^2.5.2",
-    "karma": "^1.4.0",
-    "karma-jasmine": "^1.1.0",
-    "karma-phantomjs-launcher": "^1.0.2",
-    "karma-typescript": "^2.1.6",
-    "rimraf": "^2.5.4",
-    "rollup": "^0.41.4",
-    "rollup-plugin-babel": "^2.7.1",
-    "rollup-plugin-sourcemaps": "^0.4.1",
-    "typescript": "^2.1.5",
-    "typings": "^2.1.0",
-    "uglify-js": "^2.7.5"
+    "@types/jasmine": "~2.5.43",
+    "@types/jquery": "~2.0.40",
+    "babel-plugin-external-helpers": "~6.22.0",
+    "babel-preset-es2015": "~6.22.0",
+    "cpx": "~1.5.0",
+    "jasmine-core": "~2.5.2",
+    "karma": "~1.5.0",
+    "karma-jasmine": "~1.1.0",
+    "karma-phantomjs-launcher": "~1.0.2",
+    "karma-typescript": "~2.1.7",
+    "rimraf": "~2.6.1",
+    "rollup": "~0.41.4",
+    "rollup-plugin-babel": "~2.7.1",
+    "rollup-plugin-sourcemaps": "~0.4.1",
+    "typescript": "~2.1.6",
+    "uglify-js": "~2.7.5"
   }
 }

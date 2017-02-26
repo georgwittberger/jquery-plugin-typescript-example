@@ -12,8 +12,5 @@
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true
-  },
-  "exclude": [
-    "node_modules"
-  ]
+  }
 }
