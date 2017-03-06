@@ -1,30 +1,247 @@
 = jQuery Plugin TypeScript Example
 
-This example project demonstrates how to write a jQuery plugin using TypeScript.
+This example project demonstrates how to write a jQuery plugin using https://www.typescriptlang.org/[TypeScript]. Experienced developers can get started quickly by following the brief instructions in the <<Getting Started>> section. For those who are new to TypeScript or those who want to learn more about the concepts behind the project structure there is a <<Step-by-Step Tutorial>> which explains the project setup in detail.
 
-It incorporates the following concepts to facilitate development and provide modern deployment:
+== Introduction
 
-. Source code of the jQuery plugin can be written in TypeScript with all the benefits like type checking, code completion etc.
-. Source code of the jQuery plugin can be structured into various modules to allow separation of concerns and reuse of certain classes or functions.
-. Source code of the jQuery plugin is automatically tested using https://karma-runner.github.io/[Karma] and https://jasmine.github.io/[Jasmine].
-. TypeScript modules are compiled into modern ES2015 modules which can be loaded in modern browsers.
-. ES2015 modules are bundled into a single JavaScript file using http://rollupjs.org/[rollup.js]. The bundle is converted to ES5 language level for better browser compatibility.
-. JavaScript bundle is minified using http://lisperator.net/uglifyjs/[UglifyJS] to further reduce its size.
+This is an example project that demonstrates what I currently find a best practice project setup for the development of JavaScript code using the TypeScript language. Even if it shows the basic ideas by writing a jQuery plugin those concepts are not limited to jQuery at all. You can use this setup for any kind of frontend JavaScript project. To keep the example simple and understandable it focuses only on the most essentials aspects of the development process:
+
+* All the source code should be written in https://www.typescriptlang.org/[TypeScript] with all the benefits like type checking, code completion etc.
+* The TypeScript source code should be structured into various modules to allow separation of concerns and reuse of certain classes or functions.
+* The TypeScript source code should be tested automatically using https://karma-runner.github.io/[Karma] and https://jasmine.github.io/[Jasmine] with a minimum of extra configuration.
+* For usage in modern browsers the TypeScript source code should be compiled into ES2015 modules.
+* For better compatibility with older browsers and to facilitate loading in the web page the ES2015 modules should be bundled into a single JavaScript file using http://rollupjs.org/[rollup.js].
+* The JavaScript bundle should be minified using http://lisperator.net/uglifyjs/[UglifyJS] to reduce load time.
+* All compiled resources (ES2015 modules, JavaScript bundles) should provide sourcemaps for easier debugging in the browser.
+
+See the section <<Getting Started>> for quick instructions how to run the build process and how to try the example jQuery plugin.
+
+See the <<Step-by-Step Tutorial>> for detailed explanations of the basic ideas behind this project setup.
 
 == Getting Started
 
-. Clone the repository.
+. Clone the Git repository.
 . Open a terminal in the project root.
-. Make sure you have installed a recent version of https://nodejs.org/[Node.js].
+. Make sure you have installed a recent version of https://nodejs.org/[Node.js] and https://www.npmjs.com/[NPM].
 . Install the dependencies by running: `npm install`.
 . Build the project by running: `npm run build`.
 . Execute the tests by running: `npm test`.
-. Open the file `dist/example.html` in your browser. Try it.
+. Open the file `dist/example.html` in your browser. See the jQuery plugin in action.
 
 == Step-by-Step Tutorial
+
+=== Setting up the development environment
+
+TypeScript code cannot be executed in the browser directly. Before it can be used in a web page it has to be compiled into pure JavaScript code. So we need to set up some kind of build process for the TypeScript compilation.
+
+The TypeScript compiler is available as a https://www.npmjs.com/[NPM] module and therefore it is obvious the create a NPM project and install the compiler as a development dependency. All you need to do is:
+
+. Install a recent version of https://nodejs.org/[Node.js]. I would recommend to use the LTS version because it is quite settled and should work with most of the libraries you may use in your project. The installation of Node.js also includes NPM, the package manager that we will be using for the build process and dependency management.
+. Create a new directory where you would like to start your project.
+. Open a terminal in your project directory.
+. Run the command: `npm init`. This will prompt for some basic project information which can be changed at any time later on. Keep pressing ENTER if you are not sure what to do.
+
+Finally, you will have a file `package.json` in your project directory. This file is typical for all NPM projects and contains meta information about your project as well as the build scripts and a list of libraries that are required by your project.
+
+=== Installing the TypeScript compiler
+
+Once you have initialized your NPM project you should install the TypeScript compiler.
+
+. Go to the terminal in your project directory.
+. Run the command: `npm install typescript@2.1.6 --save-dev`.
+
+IMPORTANT: The restriction to TypeScript 2.1 is only necessary because there is a breaking change in TypeScript 2.2 which prevents the https://github.com/monounity/karma-typescript[karma-typescript] preprocessor from working. The author is already working on a new version, see issue https://github.com/monounity/karma-typescript/issues/92 - once this has been fixed you may also use the latest TypeScript version.
+
+You will notice a new directory `node_modules` in your project. It is managed by NPM and contains all the libraries that your project depends on.
+
+TIP: You should exclude `node_modules` from your source code management. If you are using Git you should add a `.gitignore` file in your project directory which defines `/node_modules` as a resource to exclude.
+
+Since the compiler is installed locally to your project you will have to create a NPM script to be able to run the compilation from the command line.
+
+. Open the file `package.json` with the text editor.
+. Add a new propery `compile` with the value `tsc` in the `scripts` object:
+
+.package.json
+----
+{
+  ...
+  "scripts": {
+    ...
+    "compile": "tsc"
+  }
+  ...
+}
+----
+
+This allows you to run the TypeScript compiler from the command line via `npm run compile`. But do not execute it for now since we do not have created a configuration yet.
+
+=== Configuring the TypeScript compiler
+
+The TypeScript compiler needs some information about where to look for source files and how the generated JavaScript code should look like. A very convenient way to configure the compiler is to put a `tsconfig.json` file directly in your project directory.
+
+. Create a file `tsconfig.json` in your project directory.
+. Open the file with the text editor and insert the following code:
+
+[source,json]
+.tsconfig.json
+----
+{
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "target": "es2015",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "allowSyntheticDefaultImports": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true
+  }
+}
+----
+
+This tells the TypeScript compiler to resolve source files beneath the `src` directory and that the compiled JavaScript files should be placed in the `dist` directory. Furthermore, we instructed the compiler to produce `es2015` modules that we will use with _rollup.js_ later on. Also notice that we activated the generation of sourcemaps right at the end of the compiler options.
+
+If you want to dive into the TypeScript compiler options further please have a look at the https://www.typescriptlang.org/docs/handbook/tsconfig-json.html[documentation].
+
+=== Creating a TypeScript source file
+
+Now that you have configured the TypeScript compiler you are ready to create a first source code file. As we told the compiler to expect source files in the `src` directory you should put all your TypeScript files there (or in subdirectories beneath).
+
+. Create a directory `src` in your project directory.
+. Create a new file `example-service.ts` in the `src` directory.
+. Open the new TypeScript file in the text editor and insert the following code:
+
+[source,typescript]
+.example-service.ts
+----
+export class ExampleService {
+  getExampleMessage(name: string): string {
+    return 'Hello, ' + name + '!';
+  }
+}
+----
+
+Now you can try the first build of your project.
+
+. Go to the terminal in your project directory.
+. Run the command: `npm run compile`. This will launch the TypeScript compiler since we provided the `compile` script in the `package.json`.
+
+After the command has been completed you should find a new directory `dist` in your project directory. It will contain the compiled JavaScript file `example-service.js` and its corresponding sourcemap file `example-service.js.map`.
+
+=== Installing the test frameworks
+
+Right from the beginning of your project you should write tests for your source code. This will help you keeping your project stable even when it grows over time and makes it ready for continuous delivery.
+
+We will use the JavaScript library https://jasmine.github.io/[Jasmine] to define test cases and leverage the https://karma-runner.github.io/[Karma] runner to execute those tests. Explaining the two frameworks in detail is beyond the scope of this tutorial. We will focus on what is needed in our project to create a basic unit test.
+
+. Go to the terminal in your project directory.
+. Run the command: `npm install jasmine-core --save-dev`. This will install the Jasmine framework that we will use to define our test cases.
+. Run the command: `npm install @types/jasmine --save-dev`. This will install the TypeScript declaration files for Jasmine. Those are required because Jasmine itself is not written in TypeScript but we want to write our unit tests in TypeScript as well. The declaration files provide hints for the TypeScript compiler so that it recogizes all the functions provided by Jasmine.
+. Run the command: `npm install karma --save-dev`. This will install the Karma test runner. Think of it as a framework that creates a synthetic HTML page which loads your JavaScript files, starts an embedded web server to provide all those files, launches a browser to open the test page thus running the tests and collects results from test frameworks like Jasmine.
+. Run the command: `npm install karma-jasmine --save-dev`. This will install the Jasmine framework support for Karma.
+. Run the command: `npm install karma-phantomjs-launcher --save-dev`. This will install the PhantomJS browser support for Karma. PhantomJS is a headless browser which does not open any windows and works perfectly for the execution of JavaScript unit tests. You do not need to install that browser on your own. The launcher pulls it as a dependency.
+. Run the command: `npm install karma-typescript --save-dev`. This will install a TypeScript preprocessor for Karma. So we can send our TypeScript source code directly to the test runner without having to compile them to JavaScript in advance. This is all handled internally.
+
+Once we have installed all the tools and frameworks required for running the tests we must create a configuration file `karma.conf.js` to give the Karma runner some hints which files to include and how to run our tests.
+
+. Create a file `karma.conf.js` in your project directory.
+. Open the configuration file with the text editor and insert the following code:
+
+[source,javascript]
+.karma.conf.js
+----
+module.exports = function (config) {
+  config.set({
+    basePath: '',
+    browsers: ['PhantomJS'],
+    frameworks: ['jasmine', 'karma-typescript'],
+    files: [
+      { pattern: "src/**/*.ts" }
+    ],
+    preprocessors: {
+      '**/*.ts': ['karma-typescript']
+    },
+    karmaTypescriptConfig: {
+      compilerOptions: {
+        noImplicitAny: true,
+        noImplicitReturns: true,
+        noImplicitThis: true,
+        allowSyntheticDefaultImports: true
+      }
+    },
+    reporters: ['progress', 'karma-typescript'],
+    port: 9876,
+    colors: true,
+    logLevel: config.LOG_INFO,
+    autoWatch: false,
+    singleRun: true,
+    concurrency: Infinity
+  })
+}
+----
+
+So we told Karma that all TypeScript files beneath the `src` directory should be loaded and that TypeScript files need to be processed by `karma-typescript`. Furthermore, we defined `PhantomJS` as the browser to execute our tests and instructed Karma to load framework support for Jasmine and TypeScript.
+
+If you want to know more about the Karma configuration please have a look at the https://karma-runner.github.io/1.0/config/configuration-file.html[documentation].
+
+Since Karma is also installed locally in your project you will have to create NPM script to run the tests from the command line.
+
+. Open the file `package.json` with the text editor.
+. There should already be a property `test` in the `scripts` object (if not create a new property). Set the value of the `test` script to `karma start`:
+
+.package.json
+----
+{
+  ...
+  "scripts": {
+    ...
+    "test": "karma start"
+  }
+  ...
+}
+----
+
+This allows you to run Karma from the command line via `npm test` (note that there is no _run_ command before the script name). Do not run the test now because we have not created a specification yet.
+
+=== Creating a test specification
+
+You should create a test specification file for each TypeScript source file that contains testable code. The file should be named exactly like the source code file but with `.spec.ts` extension.
+
+. Create the file `example-service.spec.ts` in the `src` directory of your project.
+. Open the specification file with the text editor and insert the following code:
+
+[source,typescript]
+.example-service.spec.ts
+----
+import { ExampleService } from './example-service';
+describe('ExampleService', () => {
+  it('should return a greeting for the given name', () => {
+    let exampleService = new ExampleService();
+    let messageText = exampleService.getExampleMessage('Frank');
+    expect(messageText).toBe('Hello, Frank!');
+  });
+});
+----
+
+Now the time has come to run the first test case.
+
+. Go to the terminal in your project directory.
+. Run the command: `npm test`. This will fire up the Karma test runner as defined in the `package.json`.
+
+Finally, you should see a message that one test has been executed successfully. Like this:
+
+  Executed 1 of 1 SUCCESS (0.004 secs / 0.001 secs)
+
+You will find a new directory `coverage` in your project directory which contains the test coverage report. There you can see which functions have been executed during the tests and where you should better add some more test cases.
+
+=== Structuring the project with modules
 
 Upcoming...
 
 == License
 
-MIT
+https://opensource.org/licenses/MIT[MIT]
