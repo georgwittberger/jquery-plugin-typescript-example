@@ -4,7 +4,7 @@ module.exports = function (config) {
     browsers: ['PhantomJS'],
     frameworks: ['jasmine', 'karma-typescript'],
     files: [
-      { pattern: "src/**/*.ts" }
+      'src/**/*.ts'
     ],
     preprocessors: {
       '**/*.ts': ['karma-typescript']

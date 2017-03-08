@@ -2,7 +2,7 @@ import $ from 'jquery';
 import { ExampleService } from './example-service';
 
 // Define the plugin function on the jQuery extension point.
-$.fn.examplePlugin = function (this: JQuery, options: ExamplePluginOptions) {
+$.fn.examplePlugin = function (this: JQuery, options: ExamplePluginOptions): JQuery {
   // Merge the global options with the per-call options.
   options = $.extend({}, $.fn.examplePlugin.options, options);
 
@@ -26,7 +26,7 @@ $.fn.examplePlugin = function (this: JQuery, options: ExamplePluginOptions) {
 
   // Return the jQuery object for chaining.
   return this;
-}
+};
 
 // Define the plugin's global default options.
 $.fn.examplePlugin.options = {};
