@@ -50,9 +50,7 @@ Throughout this tutorial you will have to edit quite a lot of text files contain
 Once we have initialized our NPM project we can install the TypeScript compiler.
 
 . Go to the terminal in our project directory.
-. Run the command: `npm install typescript@2.1.6 --save-dev`.
-
-IMPORTANT: The restriction to TypeScript 2.1 is only necessary because there is a breaking change in TypeScript 2.2 which prevents the https://github.com/monounity/karma-typescript[karma-typescript] preprocessor from working. The author is already working on a new version, see issue https://github.com/monounity/karma-typescript/issues/92 - once this has been fixed we may also use the latest TypeScript version.
+. Run the command: `npm install typescript --save-dev`.
 
 You will notice a new directory `node_modules` in our project. It is managed by NPM and contains all the libraries that our project depends on. Do not add or remove anything within this directory on your own because it is all handled by NPM.
 
