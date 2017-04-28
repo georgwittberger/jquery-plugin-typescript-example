@@ -1,6 +1,6 @@
 {
   "name": "jquery-plugin-typescript-example",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Example project to demonstrate how to write a jQuery plugin using TypeScript",
   "repository": {
     "type": "git",
@@ -26,16 +26,16 @@
     "babel-plugin-external-helpers": "~6.22.0",
     "babel-preset-es2015": "~6.24.1",
     "cpx": "~1.5.0",
-    "jasmine-core": "~2.5.2",
+    "jasmine-core": "~2.6.1",
     "karma": "~1.6.0",
     "karma-jasmine": "~1.1.0",
     "karma-phantomjs-launcher": "~1.0.4",
-    "karma-typescript": "~3.0.0",
+    "karma-typescript": "~3.0.1",
     "rimraf": "~2.6.1",
     "rollup": "~0.41.6",
     "rollup-plugin-babel": "~2.7.1",
     "rollup-plugin-sourcemaps": "~0.4.2",
-    "typescript": "~2.2.2",
+    "typescript": "~2.3.1",
     "uglify-js": "~2.8.22"
   }
 }
