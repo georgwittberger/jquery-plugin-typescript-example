@@ -179,7 +179,7 @@ module.exports = function (config) {
   config.set({
     basePath: '',
     browsers: ['PhantomJS'],
-    frameworks: ['jasmine', 'karma-typescript'],
+    frameworks: ['phantomjs-shim', 'jasmine', 'karma-typescript'],
     files: [
       'src/**/*.ts'
     ],
@@ -191,7 +191,8 @@ module.exports = function (config) {
         noImplicitAny: true,
         noImplicitReturns: true,
         noImplicitThis: true,
-        allowSyntheticDefaultImports: true
+        allowSyntheticDefaultImports: true,
+        lib: ['DOM', 'ES5', 'ScriptHost', 'ES2015.Core', 'ES2015.Iterable']
       }
     },
     reporters: ['progress', 'karma-typescript'],
@@ -209,13 +210,13 @@ The configuration is exported as a typical Node.js JavaScript module. Some notew
 
 `browsers: ['PhantomJS']`:: Uses the PhantomJS browser to execute our tests. This is especially useful for continous integration because we do not have to install more complex browsers like Chrome or Firefox in our CI server.
 
-`frameworks: ['jasmine', 'karma-typescript']`:: Loads the framework plugins for Jasmine and TypeScript which we have installed as separate NPM modules.
+`frameworks: ['phantomjs-shim', 'jasmine', 'karma-typescript']`:: Loads the framework plugins for ES2015 shims, Jasmine and TypeScript which we have installed as separate NPM modules.
 
 `$$files: ['src/**/*.ts']$$`:: Includes all TypeScript source files beneath the `src` directory in the test runner.
 
 `$$preprocessors: {'**/*.ts': ['karma-typescript']}$$`:: Sends all TypeScript files to the preprocessor which automagically transforms them into JavaScript that can be loaded in the test page.
 
-`karmaTypescriptConfig: {...}`:: Configures the TypeScript preprocessor. We have to make sure that it uses the same compiler restrictions as our normal compilation process because it does not honor the `tsconfig.json` file in our project directory. CAUTION: Do not override the `target` or `module` options since the preprocessor must set its own values to work properly.
+`karmaTypescriptConfig: {...}`:: Configures the TypeScript preprocessor. We have to make sure that it uses the same compiler restrictions as our normal compilation process because it does not honor the `tsconfig.json` file in our project directory. CAUTION: Do not override the `target` or `module` options since the preprocessor must set its own values to work properly. Nevertheless, we have to tell the compiler that some newer ES2015 features are available in the browser because we use shims.
 
 `reporters: ['progress', 'karma-typescript']`:: Processes the test results with the built-in `progress` reporter to display test progress in the console and with the TypeScript reporter to create a coverage report.
 
@@ -325,6 +326,8 @@ $.fn.examplePlugin = function (this: JQuery): JQuery {
 };
 ----
 
+IMPORTANT: Extending the `$.fn` object using TypeScript requires some additional declaration to be present in the project (see `src/example-plugin-interface.d.ts`). This is required to tell the compiler that a new property/function will be available on the type `JQuery` and how it looks like.
+
 The new thing here is the `import` of the `jquery` module which allows us to make use of the well-known dollar function. With the statement `$.fn.examplePlugin = function ...` we register an extension that can be used on any jQuery object like this:
 
 [source,javascript]
@@ -358,7 +361,7 @@ We will be using http://rollupjs.org/[rollup.js] to package everything together.
 . Run the command: `npm install rollup --save-dev`. This will install the rollup.js module bundler as a development dependency.
 . Run the command: `npm install rollup-plugin-babel --save-dev`. This installs the Babel plugin for rollup.js that we will use to transpile our ES2015 modules to the more compatible ES5 language level.
 . Run the command: `npm install rollup-plugin-sourcemaps --save-dev`. This installs the Sourcemap plugin for rollup.js so that we can still debug our TypeScript code in the browser even when we are using the JavaScript bundle.
-. Run the commands: `npm install babel-preset-es2015 --save-dev` and `npm install babel-plugin-external-helpers --save-dev`. This will install a preset and helper modules for Babel which be used by the Babel plugin.
+. Run the commands: `npm install babel-preset-env --save-dev` and `npm install babel-plugin-external-helpers --save-dev`. This will install a preset and helper modules for Babel which be used by the Babel plugin.
 
 As with the TypeScript compiler and Karma we need to configure rollup.js with a separate configuration file to tell the bundler which module to use as the entry point and what kind of bundle we would like to generate.
 
@@ -372,16 +375,18 @@ import babel from 'rollup-plugin-babel';
 import sourcemaps from 'rollup-plugin-sourcemaps';
 
 export default {
-  entry: 'dist/example-plugin.js',
-  dest: 'dist/example-plugin-bundle.js',
-  format: 'iife',
+  input: 'dist/example-plugin.js',
+  output: {
+    file: 'dist/example-plugin-bundle.js',
+    format: 'iife',
+    sourcemap: true,
+    globals: {
+      jquery: 'jQuery'
+    }
+  },
   external: [
     'jquery'
   ],
-  globals: {
-    jquery: 'jQuery'
-  },
-  sourceMap: true,
   plugins: [
     babel({
       exclude: 'node_modules/**',
@@ -393,15 +398,15 @@ export default {
 
 The configuration is a Node.js-style module which exports an object with the configuration values.
 
-`entry: 'dist/example-plugin.js'`:: Uses the compiled ES2015 module of our jQuery plugin (compiler output of `example-plugin.ts`) as the entry point to start the bundling process. Starting from this module the bundler will work through the imports and package everything together.
+`input: 'dist/example-plugin.js'`:: Uses the compiled ES2015 module of our jQuery plugin (compiler output of `example-plugin.ts`) as the entry point to start the bundling process. Starting from this module the bundler will work through the imports and package everything together.
 
-`dest: 'dist/example-plugin-bundle.js'`:: Writes the generated JavaScript bundle to the file `example-plugin-bundle.js` in the `dist` directory of our project.
+`output.file: 'dist/example-plugin-bundle.js'`:: Writes the generated JavaScript bundle to the file `example-plugin-bundle.js` in the `dist` directory of our project.
 
-`format: 'iife'`:: Instructs rollup.js to generate the bundle in https://en.wikipedia.org/wiki/Immediately-invoked_function_expression[IIFE] format (Immediately Invoked Function Expression) which is the right format to include the JavaScript file in a HTML page using a simple `<script>` tag.
+`output.format: 'iife'`:: Instructs rollup.js to generate the bundle in https://en.wikipedia.org/wiki/Immediately-invoked_function_expression[IIFE] format (Immediately Invoked Function Expression) which is the right format to include the JavaScript file in a HTML page using a simple `<script>` tag.
 
-`external: ['jquery'], globals: {jquery: 'jQuery'}`:: Tells the bundler that the module `jquery` is an external dependency which should not be included in the bundle and that this external module is defined in the global variable `jQuery`. So we will have to include jQuery with a separate `<script>` tag into our web page before we include our bundle.
+`output.sourcemap: true`:: Produces a sourcemap file for the JavaScript bundle to allow easier debugging of our code even when only the single JavaScript file is loaded in the browser.
 
-`sourceMap: true`:: Produces a sourcemap file for the JavaScript bundle to allow easier debugging of our code even when only the single JavaScript file is loaded in the browser.
+`external: ['jquery'], output.globals: {jquery: 'jQuery'}`:: Tells the bundler that the module `jquery` is an external dependency which should not be included in the bundle and that this external module is defined in the global variable `jQuery`. So we will have to include jQuery with a separate `<script>` tag into our web page before we include our bundle.
 
 `plugins: [...]`:: Enables the Babel plugin to transpile our JavaScript bundle to the more compatible ES5 language level and to load the sourcemaps of the ES2015 modules we are using as input. This ensures that we can even debug our TypeScript code when we use the bundle in a web page.
 
@@ -417,12 +422,9 @@ Since we use the Babel plugin to scale the JavaScript language level down to ES5
 ----
 {
   "presets": [
-    [
-      "es2015",
-      {
-        "modules": false
-      }
-    ]
+    ["env", {
+      "modules": false
+    }]
   ],
   "plugins": [
     "external-helpers"
@@ -498,7 +500,7 @@ So far, so good. The JavaScript bundle we have created can be used as it is but 
   ...
   "scripts": {
     ...
-    "minify": "uglifyjs dist/example-plugin-bundle.js --output dist/example-plugin-bundle.min.js --source-map dist/example-plugin-bundle.min.js.map --source-map-url example-plugin-bundle.min.js.map --in-source-map dist/example-plugin-bundle.js.map"
+    "minify": "uglifyjs dist/example-plugin-bundle.js --output dist/example-plugin-bundle.min.js --source-map \"filename='dist/example-plugin-bundle.min.js.map',url='example-plugin-bundle.min.js.map',content='dist/example-plugin-bundle.js.map'\""
   }
   ...
 }
@@ -510,11 +512,7 @@ First parameter `dist/example-plugin-bundle.js`:: Defines the input file that sh
 
 `--output dist/example-plugin-bundle.min.js`:: Writes the minified version of the JavaScript bundle to the file `example-plugin-bundle.min.js` in the `dist` directory.
 
-`--source-map dist/example-plugin-bundle.min.js.map`:: Generates a sourcemap file `example-plugin-bundle.min.js.map` for the minified JavaScript. It helps debugging in the browser even when we use the minified JavaScript bundle in the web page.
-
-`--source-map-url example-plugin-bundle.min.js.map`:: Sets the URL for the sourcemap reference only to the file name `example-plugin-bundle.min.js.map`, i.e. the sourcemap file should be looked up in the same directory as the JavaScript itself.
-
-`--in-source-map dist/example-plugin-bundle.js.map`:: Loads previously generated sourcemaps that come from the TypeScript compiler and rollup.js to allow mapping directly to the original TypeScript source code.
+`--source-map "filename=,url=,content="`:: Configures various options for the generation of sourcemaps which help debugging in the browser even when we use the minified JavaScript bundle in the web page. The `filename` option tells UglifyJS to generate a separate sourcemap file `example-plugin-bundle.min.js.map` for the minified JavaScript. The `url` option defines which URL should be written to the minified JavaScript to reference the sourcemap file. The `content` option tells UglifyJS that there is already a sourcemap for the input file generated by rollup.js which should be used to even map the minified code directly to the TypeScript sources.
 
 Once the script has been added to the `package.json` file we can run the minification from the command line via `npm run minify`. We can also integrate it into the `build` script sequence as an additional task:
 

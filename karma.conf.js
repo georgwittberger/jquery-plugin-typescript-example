@@ -2,7 +2,7 @@ module.exports = function (config) {
   config.set({
     basePath: '',
     browsers: ['PhantomJS'],
-    frameworks: ['jasmine', 'karma-typescript'],
+    frameworks: ['phantomjs-shim', 'jasmine', 'karma-typescript'],
     files: [
       'src/**/*.ts'
     ],
@@ -14,7 +14,10 @@ module.exports = function (config) {
         noImplicitAny: true,
         noImplicitReturns: true,
         noImplicitThis: true,
-        allowSyntheticDefaultImports: true
+        allowSyntheticDefaultImports: true,
+        // Compilation target is ES5 but some ES2015 features are enabled using shim.
+        // Tell the compiler that those newer features are available.
+        lib: ['DOM', 'ES5', 'ScriptHost', 'ES2015.Core', 'ES2015.Iterable']
       }
     },
     reporters: ['progress', 'karma-typescript'],
