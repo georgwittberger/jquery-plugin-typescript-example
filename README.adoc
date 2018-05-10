@@ -541,7 +541,7 @@ There should be an additional file `example-plugin-bundle.min.js` in the `dist` 
 <html>
 <body>
   <p>Frank</p>
-  <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
   <script src="example-plugin-bundle.min.js"></script>
   <script>
     $('p').examplePlugin();
