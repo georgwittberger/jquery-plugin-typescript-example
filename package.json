@@ -1,6 +1,6 @@
 {
   "name": "jquery-plugin-typescript-example",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Example project to demonstrate how to write a jQuery plugin using TypeScript",
   "repository": {
     "type": "git",
@@ -18,26 +18,26 @@
   "author": "Georg Wittberger <georg.wittberger@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "jquery": "~3.2.1"
+    "jquery": "~3.3.1"
   },
   "devDependencies": {
-    "@types/jasmine": "~2.6.0",
-    "@types/jquery": "~3.2.13",
-    "babel-core": "~6.26.0",
+    "@types/jasmine": "~2.8.7",
+    "@types/jquery": "~3.3.1",
+    "babel-core": "~6.26.3",
     "babel-plugin-external-helpers": "~6.22.0",
-    "babel-preset-env": "~1.6.0",
+    "babel-preset-env": "~1.7.0",
     "cpx": "~1.5.0",
-    "jasmine-core": "~2.8.0",
-    "karma": "~1.7.1",
-    "karma-jasmine": "~1.1.0",
+    "jasmine-core": "~3.1.0",
+    "karma": "~2.0.2",
+    "karma-jasmine": "~1.1.2",
     "karma-phantomjs-launcher": "~1.0.4",
     "karma-phantomjs-shim": "~1.5.0",
-    "karma-typescript": "~3.0.7",
+    "karma-typescript": "~3.0.12",
     "rimraf": "~2.6.2",
-    "rollup": "~0.50.0",
-    "rollup-plugin-babel": "~3.0.2",
+    "rollup": "~0.58.2",
+    "rollup-plugin-babel": "~3.0.4",
     "rollup-plugin-sourcemaps": "~0.4.2",
-    "typescript": "~2.5.3",
-    "uglify-js": "~3.1.4"
+    "typescript": "~2.8.3",
+    "uglify-js": "~3.3.24"
   }
 }

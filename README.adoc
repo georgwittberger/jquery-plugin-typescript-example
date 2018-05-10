@@ -476,7 +476,7 @@ Finally, there should be the bundle JavaScript file `example-plugin-bundle.js` i
 <html>
 <body>
   <p>Frank</p>
-  <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
   <script src="example-plugin-bundle.js"></script>
   <script>
     $('p').examplePlugin();
